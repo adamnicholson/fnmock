@@ -1,6 +1,6 @@
 # FnMock
 
-A PHP testing tool for mocking PHP functions.
+A PHP testing tool for mocking functions.
 
 Most mocking frameworks only allow mocking of objects. FnMock is a tiny class that makes it easy to test functions outside the context of a class.
 
