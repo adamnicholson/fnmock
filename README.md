@@ -1,9 +1,12 @@
 # FnMock
 
-A PHP testing took for mocking PHP functions.
+A PHP testing tool for mocking PHP functions.
 
-Most mocking frameworks only allow mocking of objects. FnMock is a tiny class that makes it easy to test native PHP functions as long as the caller is namespaced.
+Most mocking frameworks only allow mocking of objects. FnMock is a tiny class that makes it easy to test functions outside the context of a class.
 
+> **Important**: Mocking functions is only supported when the function caller is within a namespace.
+
+## Example
 
 ```php
 // Code
@@ -18,8 +21,9 @@ class Client {
         curl_setopt($ch, CURLOPT_POST, 1);
 
         $response = curl_exec($ch);
-
         curl_close($ch);
+
+		return $response;
     }
 }
 ```
@@ -28,9 +32,56 @@ class Client {
 use FnMock\FnMock;
 
 $client = new Http\Client();
+
 FnMock::mock('Client\curl_exec', function($ch) {
     $url = curl_getinfo($ch)['url'];
-    assert($url == 'http://google.com');
+    assert($url === 'http://google.com');
+	return 'Fake response from server';
 });
 
-$client->touch('http://google.com');
+$response = $client->touch('http://google.com');
+assert($response === 'Fake response from server');
+
+// Important: Reset FnMock as part of your tearDown process
+FnMock::reset();
+```
+
+## PHPUnit
+
+Integrate it with PHPUnit
+
+```php
+use FnMock\FnMock;
+
+class TestCase extends \PHPUnit_Framework_TestCase 
+{
+    protected function mockFunction($fn, callable $callback) 
+    {
+        FnMock::mock($fn, $callback);
+    }
+
+    public function tearDown()
+    {
+        FnMock::reset();
+        parent::tearDown();
+    }
+}
+```
+Or just use the trait we provide
+
+```php
+use FnMock\PHPUnitTrait;
+
+class TestCase extends \PHPUnit_Framework_TestCase
+{
+    use PHPUnitTrait;
+}
+```
+
+## License
+
+Chief is licensed under the MIT License - see the `LICENSE.txt` file for details
+
+## Author
+
+Adam Nicholson - adamnicholson10@gmail.com
