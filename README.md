@@ -46,9 +46,14 @@ assert($response === 'Fake response from server');
 FnMock::reset();
 ```
 
-## PHPUnit
+## Install
 
-Integrate it with PHPUnit
+```
+composer require fnmock/fnmock
+```
+
+
+## Integrate it with PHPUnit
 
 ```php
 use FnMock\FnMock;
