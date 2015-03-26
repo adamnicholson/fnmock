@@ -80,7 +80,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
 ## License
 
-Chief is licensed under the MIT License - see the `LICENSE.txt` file for details
+FnMock is licensed under the MIT License - see the `LICENSE.txt` file for details
 
 ## Author
 
