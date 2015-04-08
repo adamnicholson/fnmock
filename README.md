@@ -33,7 +33,7 @@ use FnMock\FnMock;
 
 $client = new Http\Client();
 
-FnMock::mock('Client\curl_exec', function($ch) {
+FnMock::mock('Http\curl_exec', function($ch) {
     $url = curl_getinfo($ch)['url'];
     assert($url === 'http://google.com');
 	return 'Fake response from server';
